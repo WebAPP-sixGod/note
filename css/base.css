@@ -1,0 +1,56 @@
+html,body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+.container {
+	height: 100%;
+}
+.container section {
+	height: 100%;
+	float: left;
+}
+#menu-section {
+	width: 20%;
+	height: 100%;
+	background-color: red;
+}
+#item-section {
+	width: 30%;
+	height: 100%;
+	padding: 28px 14px 0 14px;
+	/*background-color: #36312C;*/
+	background-color: white;
+}
+#item-section .item {
+	border-radius: 2px;
+	cursor:pointer;
+	padding: 8px;
+	background-color: #F6F6F6;
+	transition:background-color 1s, color 0.5s;
+}
+#item-section .item:hover {
+	background-color: gray;
+	color: white;
+}
+#item-section .item .item-title {
+	font-size: 16px;
+	line-height: 22px;
+	font-weight: 600;
+}
+#item-section .item p {
+	font-size: 14px;
+	margin: 0px;
+}
+#detail-section {
+	float: right;
+	width: 50%;
+	height: 100%;
+	background-color: yellow;
+}
+.clearfix:after {
+	display: block;
+	clear: both;
+	content:'';
+}
