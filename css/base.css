@@ -4,6 +4,9 @@ html,body {
 	margin: 0;
 	padding: 0;
 }
+a {
+	text-decoration: none;
+}
 .container {
 	height: 100%;
 }
@@ -19,7 +22,7 @@ html,body {
 #item-section {
 	width: 30%;
 	height: 100%;
-	padding: 28px 14px 0 14px;
+	padding: 14px;
 	/*background-color: #36312C;*/
 	background-color: white;
 }
@@ -28,7 +31,7 @@ html,body {
 	cursor:pointer;
 	padding: 8px;
 	background-color: #F6F6F6;
-	transition:background-color 1s, color 0.5s;
+	transition:background-color 0.5s, color 0.5s;
 }
 #item-section .item:hover {
 	background-color: gray;
