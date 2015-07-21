@@ -27,6 +27,7 @@ a {
 	background-color: white;
 }
 #item-section .item {
+	margin-bottom: 8px;
 	border-radius: 2px;
 	cursor:pointer;
 	padding: 8px;

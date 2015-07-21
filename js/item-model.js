@@ -34,9 +34,28 @@ Item.prototype.save = function(callback){
 	return callback(null);
 }
 Item.prototype.update = function(){}
-Item.prototype.delete = function(){}
+
 
 /***************类方法********************/
+Item.delete = function(title, callback) {
+	var a = localStorage.getItem('index').split(',');
+	if(!localStorage.getItem(title)) {
+		return callback('删除失败：不存在此条目');
+	}
+	a.forEach(function(value, index, array) {
+		if(value == title){
+			array.splice(index, 1);
+			if(array.length != 0) {
+				localStorage.setItem('index', array.join(','));
+			}
+			else {
+				localStorage.removeItem('index');
+			}
+			localStorage.removeItem(value);
+			return callback(null);
+		}
+	})
+}
 Item.getAll = function(){}
 Item.getAllByClass = function(){}
 Item.getOne = function(){}
