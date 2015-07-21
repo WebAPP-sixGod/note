@@ -5,7 +5,7 @@
     <title>我的知识note</title>
     <!-- 自定义样式 -->
     <link rel="stylesheet" type="text/css" href="css/base.css">
-
+    
     <style>
     </style>
 </head>
@@ -14,18 +14,17 @@
         <section id="menu-section">
             菜单
         </section>
+
         <section id="item-section">
             <h1>
                 笔记
                 <a href="##">新增</a>
             </h1>
-            <div class="item">
-                <p class="item-title">啦啦啦</p>
-                <p class="item-abstract">
-                    这是正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文
-                </p>
+            <div class="items">
+            <!-- 增加条目 -->
             </div>
         </section>
+
         <section id="detail-section">
             <div id="form-add">
                 <div class="form-control">
@@ -37,18 +36,19 @@
                     <textarea id="input-abstract"></textarea>
                 </div>
                 <button id="submit-add">保存</button>
+                <button id="update-add">更新</button>
             </div>
         </section>
+        <script>
+        </script>
     </div>
-</body>
-<!-- js -->
-<script src="node_modules/jquery/dist/jquery.min.js"></script>
-<script src="node_modules/marked/marked.min.js"></script>
-<!-- 自定义脚本 -->
-<!-- 辅助方法 -->
-<script src="js/util.js"></script>
-<!-- item-model item数据模型 -->
-<script src="js/item-model.js"></script>
-<script src="js/base.js"></script>
 
-</html>
+    <!-- js -->
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/marked/marked.min.js"></script>
+    <!-- 自定义脚本 -->
+    <!-- item-model item数据模型 -->
+    <script src="js/util.js"></script>
+    <script src="js/item-model.js"></script>
+    <script src="js/base.js"></script>
+</body>
