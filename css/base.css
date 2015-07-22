@@ -3,9 +3,13 @@ html,body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
+	font-family: "Microsoft YaHei";
 }
 a {
 	text-decoration: none;
+}
+li{
+	list-style-type: none;
 }
 .container {
 	height: 100%;
@@ -17,14 +21,16 @@ a {
 #menu-section {
 	width: 20%;
 	height: 100%;
-	background-color: red;
+	background-color: rgb(243, 239, 229);
+	/*border-right: 2px solid #fff;
+	margin-right: -2px;*/
 }
 #item-section {
 	width: 30%;
 	height: 100%;
 	padding: 14px;
 	/*background-color: #36312C;*/
-	background-color: white;
+	background-color: rgb(243, 239, 229);
 }
 #item-section .item {
 	margin-bottom: 8px;
@@ -62,4 +68,33 @@ a {
 .text_edit {
 	width: 100%;
 	height: 500px;
+}
+.floatleft{
+	float:left;
+}
+.floatright{
+	float:right;
+}
+header{
+	color: white;
+	font-size: 1.5em;
+	background-color: rgb(102, 193, 211);
+	padding: 10px 40px;
+	border-bottom: 2px solid #fff;
+	height: 50px;
+	line-height: 50px;
+}
+/*header */
+nav{
+	background-color: rgb(102, 193, 211);
+}
+nav li{
+	float: left;
+}
+nav .nav-list {
+	margin-right: 3rem;
+}
+nav .nav-list a{
+	color: white;
+
 }
