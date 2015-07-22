@@ -16,9 +16,9 @@
         </section>
 
         <section id="item-section">
-            <h1>
+            <h1 class="clearfix">
                 笔记
-                <a href="##">新增</a>
+                <a class="pull-right" id="form-add-trigger" href="##">+</a>
             </h1>
             <div class="items">
             <!-- 增加条目 -->
@@ -28,14 +28,32 @@
             <div id="form-add">
                 <div class="form-control">
                     <p>标题：</p>
-                    <input type="text" id="input-title" />
+                    <input type="text" class="input-title" />
                 </div>
                 <div class="form-control">
                     <p>正文：</p>
-                    <textarea id="input-abstract"></textarea>
+                    <textarea class="input-abstract"></textarea>
                 </div>
                 <button id="submit-add">添加</button>
+            </div>
+            <div id="form-edit">
+                <div class="form-control">
+                    <p>标题：</p>
+                    <input type="text" class="input-title" />
+                </div>
+                <div class="form-control">
+                    <p>正文：</p>
+                    <textarea class="input-abstract"></textarea>
+                </div>
                 <button id="update-add">更新</button>
+            </div>
+            <div id="item-detail">
+                <div id="item-detail-title">
+                    <h1></h1>
+                </div>
+                <div id="item-detail-abstract">
+                    <p></p>
+                </div>
             </div>
         </section>
         <script>

@@ -19,9 +19,13 @@ Item.prototype.save = function(callback){
 		'abstract': this.abstract,
 		'cTime': this.cTime
 	}
+    // title不能为空
+    if(!o.title) {
+        return callback('标题要写*3');
+    }
 	// 检测是否存在
 	if(localStorage.getItem(o.title)) {
-		return callback('Already exsit!');
+		return callback('这条笔记已经存在了，换个名字吧');
 	}
 	// 插入index
 	if(localStorage.getItem('index') && localStorage.getItem('index') != ''){
@@ -33,7 +37,18 @@ Item.prototype.save = function(callback){
 	localStorage.setItem(o.title, JSON.stringify(o));
 	return callback(null);
 }
-Item.prototype.update = function(){}
+
+Item.prototype.update = function(callback){
+	var o = {
+		'class': this.class,
+		'title': this.title,
+		'abstract': this.abstract,
+		'cTime': this.cTime
+	}
+	// 创建条目
+	localStorage.setItem(o.title, JSON.stringify(o));
+	return callback(null);
+}
 
 
 /***************类方法********************/
@@ -60,4 +75,3 @@ Item.getAll = function(){}
 Item.getAllByClass = function(){}
 Item.getOne = function(){}
 
-/*..つづく*/

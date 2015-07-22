@@ -3,14 +3,20 @@ html,body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
+	font-family: 'Microsoft Yahei'
 }
 a {
 	text-decoration: none;
+}
+button:hover {
+	cursor: pointer;
+	color: rgb(144, 73, 18);
 }
 .container {
 	height: 100%;
 }
 .container section {
+	padding: 14px;
 	height: 100%;
 	float: left;
 }
@@ -22,11 +28,17 @@ a {
 #item-section {
 	width: 30%;
 	height: 100%;
-	padding: 14px;
-	/*background-color: #36312C;*/
 	background-color: white;
 }
+#item-section h1{
+	padding-bottom: 8px;
+	border-bottom: 1px solid #e0e0e0;
+}
+#form-add-trigger:hover {
+	font-size: 22px;
+}
 #item-section .item {
+	border: 1px solid white;
 	margin-bottom: 8px;
 	border-radius: 2px;
 	cursor:pointer;
@@ -48,16 +60,27 @@ a {
 	font-size: 14px;
 	margin: 0px;
 }
+
+#item-section .item p.item-abstract {
+	line-height: 1.5;
+	max-height: 42px;	
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 #detail-section {
 	float: right;
 	width: 50%;
 	height: 100%;
 	background-color: yellow;
 }
+/*通用*/
 .clearfix:after {
 	display: block;
 	clear: both;
 	content:'';
+}
+.pull-right {
+	float: right;
 }
 .text_edit {
 	width: 100%;

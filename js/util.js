@@ -42,8 +42,10 @@ function init_event() {
 	/*初始化新增元素事件
     */
     $(document).on('click', '#submit-add', function(){
-        var title = $('#form-add #input-title').val(),
-            abstract = $('#form-add #input-abstract').val(),
+        $('#detail-section > div').hide();
+        $('#form-add').show(200);
+        var title = $('#form-add .input-title').val(),
+            abstract = $('#form-add .input-abstract').val(),
             o = {
                 'class': '',
                 'title': title,
@@ -61,58 +63,57 @@ function init_event() {
         });
     });
 	// 编辑元素(使用子查询可以优化jquery选择器速度)
-	$(document).on('click', '.item .itemEdit', function() {
+	$(document).on('click', '.item .itemEdit', function(e) {
+        e.stopPropagation();
 		var clicked = $(this);
 		var currenDiv = clicked.prevAll();
 		var itemTitle = currenDiv[1].innerHTML;
 		var itemAbstract = currenDiv[0].innerHTML;
 		var currentItem = JSON.parse(localStorage.getItem(itemTitle));
-		console.log(currentItem);
+
+        $('#detail-section > div').hide();
+        $('#form-edit').show(200);
 		//将目前目录更新到编辑栏
-		$('#input-title').attr('value', itemTitle);
-		$('#input-abstract').val(itemAbstract);
-		$('#submit-add').prop('disabled', true);
-		$('#update-add').prop('disabled', false);
+		$('#form-edit .input-title').attr('value', itemTitle);
+		$('#form-edit .input-abstract').val(itemAbstract);
 		//将编辑结果更新到localStorage
 		$('#update-add').on('click', function() {
+            // 连续修改时存在一个bug：Uncaught TypeError: Cannot set property 'title' of null
 			var clicked = $(this);
-			var changedItem = clicked.prevAll();
+			var changedItem = clicked.prevAll(); 
 			var changedItemTitle = changedItem.find('input').val();
 			var changedItemAbstract = changedItem.find('textarea').val();
+            console.log(changedItemTitle);
+            console.log(changedItemAbstract);
 			var o = JSON.parse(localStorage.getItem(itemTitle));
 			o.title = changedItemTitle;
 			o.abstract = changedItemAbstract;
 			var item = new Item(o);
 			if (changedItemTitle != itemTitle) {
 				//删除元素使用Item.delete方法，该方法会删除index里面的索引和localStorage里面的item
-				Item.delete(itemTitle, function(err) {
+				// 删除旧条目
+                Item.delete(itemTitle, function(err) {
 					if(err) {
 						return error(err);
 					}
+                    // 创建新条目
 					item.save(function(err){
 			            if(err) {
 			                return error(err);
 			            }
-			            //更新条目
-			            showItem();
-			            return success('修改成功'); 
 			        });
 				});
 				
 			} else {
-				item.save(function(err){
-		            if(err) {
-		                return error(err);
-		            }
-		            //更新条目
-		            showItem();
-		            return success('修改成功'); 
-		        });
+				item.update(function(){});
 			}
+            showItem();
+            return success('修改成功');
 		});
 	});
 	// 删除元素
 	$(document).on('click', '.item .itemDelete', function(e){
+        e.stopPropagation();
 		if(!confirm('确定要删除？'))
 			return ;
 		var title = $(e.target).siblings('.item-title').text();
@@ -124,4 +125,23 @@ function init_event() {
 			return success('删除成功');
 		})
 	});
+    // 查看详情
+    $(document).on('click', '.item', function(e){
+        $('#detail-section > div').hide();
+        var title;
+        if($(e.target).prop('class') == 'item') {
+            title = $(e.target).children('.item-title').text();
+        } else {
+            title = $(e.target).parent('.item').children('.item-title').text();
+        }
+        var o = JSON.parse(localStorage.getItem(title));
+        $('#item-detail-title h1').text(o.title);
+        $('#item-detail-abstract p').text(o.abstract);
+        $('#item-detail').show(500);
+    });
+    // 新增条目菜单事件
+    $('#form-add-trigger').on('click',function() {
+        $('#detail-section > div').hide();
+        $('#form-add').show(200);
+    });
 }
