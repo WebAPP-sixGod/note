@@ -34,7 +34,7 @@ function showItem() {
 function insertItem(title) {
 	var o = JSON.parse(localStorage.getItem(title));
 	// 条目模板
-    var tpl = '<div class="item"><p class="item-title">'+ o.title +'</p>'+ '<p class="item-abstract">'+ o.abstract +'</p><button class="itemEdit">编辑</button><button class="itemDelete">删除</button></div>';
+    var tpl = '<div class="item"><p class="item-title">'+ o.title +'</p>'+ '<p class="item-abstract">'+ o.abstract +'</p><button class="itemEdit">编辑</button><button class="itemDelete">删除</button><span class="item-time">' + o.cTime + '</span></div>';
     var itemEntry = $('.items');
     itemEntry.append(tpl);
 }
@@ -59,12 +59,14 @@ function init_event() {
             }
             //更新条目
             showItem();
+            disDetail(o);
             return success('添加成功'); 
         });
     });
 	// 编辑元素(使用子查询可以优化jquery选择器速度)
 	$(document).on('click', '.item .itemEdit', function(e) {
         e.stopPropagation();
+        var othis = $(e.target);
 		var clicked = $(this);
 		var currenDiv = clicked.prevAll();
 		var itemTitle = currenDiv[1].innerHTML;
@@ -77,7 +79,7 @@ function init_event() {
 		$('#form-edit .input-title').attr('value', itemTitle);
 		$('#form-edit .input-abstract').val(itemAbstract);
 		//将编辑结果更新到localStorage
-		$('#update-add').on('click', function() {
+		$('#update-add').one('click', function() {
             // 连续修改时存在一个bug：Uncaught TypeError: Cannot set property 'title' of null
 			var clicked = $(this);
 			var changedItem = clicked.prevAll(); 
@@ -108,6 +110,8 @@ function init_event() {
 				item.update(function(){});
 			}
             showItem();
+            disDetail(o);
+            //dom被刷新了，所以事件无法触发
             return success('修改成功');
 		});
 	});
@@ -127,7 +131,6 @@ function init_event() {
 	});
     // 查看详情
     $(document).on('click', '.item', function(e){
-        $('#detail-section > div').hide();
         var title;
         if($(e.target).prop('class') == 'item') {
             title = $(e.target).children('.item-title').text();
@@ -135,13 +138,18 @@ function init_event() {
             title = $(e.target).parent('.item').children('.item-title').text();
         }
         var o = JSON.parse(localStorage.getItem(title));
-        $('#item-detail-title h1').text(o.title);
-        $('#item-detail-abstract p').text(o.abstract);
-        $('#item-detail').show(500);
+        disDetail(o);
     });
     // 新增条目菜单事件
     $('#form-add-trigger').on('click',function() {
         $('#detail-section > div').hide();
         $('#form-add').show(200);
     });
+}
+function disDetail(o) {
+    console.log(o);
+    $('#detail-section > div').hide();
+    $('#item-detail-title h1').text(o.title);
+    $('#item-detail-abstract p').text(o.abstract);
+    $('#item-detail').show(500);
 }
