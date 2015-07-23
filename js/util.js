@@ -141,9 +141,35 @@ function init_event() {
         disDetail(o);
     });
     // 新增条目菜单事件
-    $('#form-add-trigger').on('click',function() {
+    $('#form-add-trigger').on('click', function() {
         $('#detail-section > div').hide();
         $('#form-add').show(200);
+    });
+    // 新增笔记本事件
+    $('#add-class-trigger').on('click', function(){
+        var oContainer = $('#form-add-class');
+        oContainer.removeClass('display-none');
+        $('#submit-class').one('click', function() {
+            var className = oContainer.children('input').val();
+            // 过滤纯空格类名
+            if(!className.replace(/\s+/g,"")) {
+                error('类名不能为空');
+            } else {
+                var li = '<li>'
+                            + className +
+                            + '(<span class="item-number">'
+                            + Item.getNumByClass(className);
+                            + '</span>)</li>';
+                if(localStorage.getItem('class')){
+                    localStorage.setItem('class', localStorage.getItem('class') + ',' + className);
+                } 
+                else {
+                    localStorage.setItem('class', className);
+                }
+                $('#item-class').append(li);
+            }
+        });
+
     });
 }
 function disDetail(o) {

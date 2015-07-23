@@ -31,8 +31,9 @@ Item.prototype.save = function(callback){
 	if(localStorage.getItem('index') && localStorage.getItem('index') != ''){
 		localStorage.setItem('index', localStorage.getItem('index') + ',' + o.title);
 	} 
-	else 
+	else {
 		localStorage.setItem('index', o.title);
+	}
 	// 创建条目
 	localStorage.setItem(o.title, JSON.stringify(o));
 	return callback(null);
@@ -71,7 +72,9 @@ Item.delete = function(title, callback) {
 		}
 	})
 }
-Item.getAll = function(){}
+Item.getNumByClass = function(class){
+	// 施工中...
+}
 Item.getAllByClass = function(){}
 Item.getOne = function(){}
 

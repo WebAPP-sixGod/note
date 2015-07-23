@@ -24,8 +24,18 @@
    </nav> -->
     <div class="clearfix container">
         <section id="menu-section">
-            <h1>笔记本</h1>
-            <ul class="item-class">
+            <h1 class="clearfix">
+                笔记本
+                <div class="pull-right">
+                    
+                    <a id="add-class-trigger" href="##">+</a>
+                </div>
+            </h1>
+            <div id="form-add-class" class="display-none">
+                <input class="input-class" type="text" placeholder="分类名">
+                <button id="submit-class">添加</button>
+            </div>
+            <ul id="item-class">
                 <li>sb(<span class="item-number">3</span>)</li>
             </ul>
         </section>
