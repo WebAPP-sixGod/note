@@ -15,6 +15,10 @@ button:hover {
 li{
 	list-style-type: none;
 }
+section{
+	box-sizing:border-box;
+	border-right: 2px solid rgb(102, 193, 211);
+}
 .container {
 	height: 100%;
 }
@@ -27,6 +31,7 @@ li{
 	width: 20%;
 	height: 100%;
 	background-color: rgb(243, 239, 229);
+	/*border-right:2px solid white;*/
 }
 #item-section {
 	width: 30%;
@@ -75,7 +80,8 @@ li{
 	float: right;
 	width: 50%;
 	height: 100%;
-	background-color: yellow;
+	background-color: rgb(243, 239, 229);
+
 }
 /*通用*/
 .clearfix:after {
@@ -118,4 +124,29 @@ nav .nav-list {
 nav .nav-list a{
 	color: white;
 
+}
+/*输入框样式*/
+.input-title{
+	height:40px;
+	font-size: 1.3em;
+	border:none;
+	border-bottom: 1px solid #eee;  
+	width: 100%;
+	margin-top: 60px;
+	padding: 5px 10px;
+	box-sizing:border-box;
+}
+.input-abstract{
+	width: 100%;
+	border: none;
+	box-sizing: border-box;
+	height: 300px;
+	padding: 5px 10px;	
+}
+#submit-add,#update-add{
+	padding: .625em 1.25em;
+  border-radius: 50px;
+  background-color: rgb(102, 193, 211);
+  color: white;
+  font-size: 1em;
 }
