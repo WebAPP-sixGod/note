@@ -1,3 +1,6 @@
+var itemsDiv = $('.items');//笔记条目容器
+
+
 function getTime() {
 	var d = new Date();
 	return d.getFullYear() + '年' + addZero(d.getMonth()+1) + '月' + addZero(d.getDate()) + '日' + addZero(d.getHours()) + ':' + addZero(d.getMinutes());
@@ -22,7 +25,7 @@ function showAllItem() {
 	  2.插入新元素  
 	  3.更新分类数据
 	 */
-	$('.items').empty();
+	itemsDiv.empty();
 	if(localStorage.getItem('index')) {
 		var aItem = localStorage.getItem('index').split(',');
 		insertItem(aItem);
@@ -36,7 +39,7 @@ function showAllItem() {
 }
 // 在容器内插入条目
 function insertItem(arr) {
-    var itemEntry = $('.items'),
+    var itemEntry = itemsDiv,
         o,tpl;
     arr.forEach(function(title, index) {
         o = JSON.parse(localStorage.getItem(title));
@@ -73,6 +76,7 @@ function init_event() {
     });
 	// 编辑元素(使用子查询可以优化jquery选择器速度)
 	$(document).on('click', '.item .itemEdit', function(e) {
+        console.log(e.target);
         e.stopPropagation();
         var othis = $(e.target);
 		var clicked = $(this);
@@ -98,20 +102,26 @@ function init_event() {
 			o.abstract = changedItemAbstract;
 			var item = new Item(o);
 			if (changedItemTitle != itemTitle) {
-				//删除元素使用Item.delete方法，该方法会删除index里面的索引和localStorage里面的item
-				// 删除旧条目
-                Item.delete(itemTitle, function(err) {
-					if(err) {
-						return error(err);
-					}
-                    // 创建新条目
-					item.save(function(err){
-			            if(err) {
-			                return error(err);
-			            }
-			        });
-				});
-				
+				// 检查修改后的title是否会重复
+                if(!localStorage.getItem(changedItemTitle)) {
+                    //删除元素使用Item.delete方法，该方法会删除index里面的索引和localStorage里面的item
+                    // 删除旧条目
+                    Item.delete(itemTitle, function(err) {
+                        if(err) {
+                            return error(err);
+                        }
+                        // 创建新条目
+                        item.save(function(err){
+                            if(err) {
+                                return error(err);
+                            }
+                        });
+                    });
+                }
+                else {
+                    $(e.target).trigger('click');
+                    return error('这个标题重复了，换个呗~');
+                }
 			} else {
 				item.update(function(){});
 			}
@@ -145,6 +155,14 @@ function init_event() {
         }
         var o = JSON.parse(localStorage.getItem(title));
         disDetail(o);
+    });
+    // 按类别筛选
+    $(document).on('click', '#item-class li', function(e) {
+        var thisClass = $(e.target).data('class');
+        Item.getByClass(thisClass, function(err, result) {
+            itemsDiv.empty();
+            return insertItem(result);
+        })
     });
     // 新增条目菜单事件
     $('#form-add-trigger').on('click', function() {

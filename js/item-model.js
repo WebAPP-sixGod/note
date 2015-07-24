@@ -82,6 +82,15 @@ Item.getNumByClass = function(Class) {
 	});
 	return sum;
 }
-Item.getAllByClass = function(){}
+Item.getByClass = function(Class, callback){
+	var aItem = localStorage.getItem('index').split(',');
+	var result = [];
+	aItem.forEach(function(value, index, arr){
+		if(JSON.parse(localStorage.getItem(value)).class === Class) {
+			result.push(value);
+		}
+	});
+	return callback(null, result);
+}
 Item.getOne = function(){}
 
