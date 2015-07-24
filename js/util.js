@@ -17,26 +17,34 @@ function success(info) {
 	return alert(info);
 }
 //展示条目
-function showItem() {
+function showAllItem() {
 	/*1.清空旧元素
-	  2.插入新元素
-	  3.为新元素初始化事件
+	  2.插入新元素  
+	  3.更新分类数据
 	 */
 	$('.items').empty();
-	if(localStorage.getItem('index') && localStorage.getItem('index') != '') {
+	if(localStorage.getItem('index')) {
 		var aItem = localStorage.getItem('index').split(',');
-		aItem.forEach(function(title){
-			insertItem(title);
-		});
+		insertItem(aItem);
 	}
+    // 更新分类数据
+    if(localStorage.getItem('class')) {
+        $('#item-class').empty();
+        var aClass = localStorage.getItem('class').split(',');
+        insertClass(aClass);
+    }
 }
 // 在容器内插入条目
-function insertItem(title) {
-	var o = JSON.parse(localStorage.getItem(title));
-	// 条目模板
-    var tpl = '<div class="item"><p class="item-title">'+ o.title +'</p>'+ '<p class="item-abstract">'+ o.abstract +'</p><button class="itemEdit">编辑</button><button class="itemDelete">删除</button><span class="item-time">' + o.cTime + '</span></div>';
-    var itemEntry = $('.items');
-    itemEntry.append(tpl);
+function insertItem(arr) {
+    var itemEntry = $('.items'),
+        o,tpl;
+    arr.forEach(function(title, index) {
+        o = JSON.parse(localStorage.getItem(title));
+        // 条目模板
+        tpl = '<div class="item"><p class="item-title">'+ o.title +'</p>'+ '<p class="item-abstract">'+ o.abstract +'</p><button class="itemEdit">编辑</button><button class="itemDelete">删除</button><span class="item-time">' + o.cTime + '</span></div>';
+        
+        itemEntry.append(tpl);
+    });
 }
 function init_event() {
 	/*初始化新增元素事件
@@ -58,7 +66,7 @@ function init_event() {
                 return error(err);
             }
             //更新条目
-            showItem();
+            showAllItem();
             disDetail(o);
             return success('添加成功'); 
         });
@@ -85,8 +93,6 @@ function init_event() {
 			var changedItem = clicked.prevAll(); 
 			var changedItemTitle = changedItem.find('input').val();
 			var changedItemAbstract = changedItem.find('textarea').val();
-            console.log(changedItemTitle);
-            console.log(changedItemAbstract);
 			var o = JSON.parse(localStorage.getItem(itemTitle));
 			o.title = changedItemTitle;
 			o.abstract = changedItemAbstract;
@@ -109,7 +115,7 @@ function init_event() {
 			} else {
 				item.update(function(){});
 			}
-            showItem();
+            showAllItem();
             disDetail(o);
             //dom被刷新了，所以事件无法触发
             return success('修改成功');
@@ -125,7 +131,7 @@ function init_event() {
 			if(err) {
 				return error(err);
 			}
-			showItem();
+			showAllItem();
 			return success('删除成功');
 		})
 	});
@@ -153,29 +159,39 @@ function init_event() {
             var className = oContainer.children('input').val();
             // 过滤纯空格类名
             if(!className.replace(/\s+/g,"")) {
-                error('类名不能为空');
+                return error('类名不能为空');
             } else {
-                var li = '<li>'
-                            + className +
-                            + '(<span class="item-number">'
-                            + Item.getNumByClass(className);
-                            + '</span>)</li>';
+                
+                // 把现有的class储存到一个索引数组里
                 if(localStorage.getItem('class')){
                     localStorage.setItem('class', localStorage.getItem('class') + ',' + className);
                 } 
                 else {
                     localStorage.setItem('class', className);
                 }
-                $('#item-class').append(li);
+                insertClass([className]);
             }
         });
 
     });
 }
 function disDetail(o) {
-    console.log(o);
     $('#detail-section > div').hide();
     $('#item-detail-title h1').text(o.title);
     $('#item-detail-abstract p').text(o.abstract);
     $('#item-detail').show(500);
+}
+function insertClass(arr) {
+    var li,
+        oContainer = $('#item-class');
+    arr.forEach(function(value, index, array) {
+        li = '<li data-class="'
+            + value
+            + '">'
+            + value 
+            + '('
+            + Item.getNumByClass(value)
+            + ')</li>';
+        oContainer.append(li);
+    });
 }

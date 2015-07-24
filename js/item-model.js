@@ -72,8 +72,15 @@ Item.delete = function(title, callback) {
 		}
 	})
 }
-Item.getNumByClass = function(class){
-	// 施工中...
+Item.getNumByClass = function(Class) {
+	var aItem = localStorage.getItem('index').split(',');
+	var sum = 0;
+	aItem.forEach(function(value, index, arr){
+		if(JSON.parse(localStorage.getItem(value)).class === Class) {
+			sum++;
+		}
+	});
+	return sum;
 }
 Item.getAllByClass = function(){}
 Item.getOne = function(){}
