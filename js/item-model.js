@@ -8,6 +8,7 @@ function Item(obj) {
 	this.class = obj.class;
 	this.title = obj.title;
 	this.abstract = obj.abstract;
+	this.markedAbstract = obj.markedAbstract;
 	this.cTime = obj.cTime;
 }
 
@@ -17,6 +18,7 @@ Item.prototype.save = function(callback){
 		'class': this.class,
 		'title': this.title,
 		'abstract': this.abstract,
+		'markedAbstract': this.markedAbstract,
 		'cTime': this.cTime
 	}
     // title不能为空
@@ -44,6 +46,7 @@ Item.prototype.update = function(callback){
 		'class': this.class,
 		'title': this.title,
 		'abstract': this.abstract,
+		'markedAbstract': this.markedAbstract,
 		'cTime': this.cTime
 	}
 	// 创建条目
