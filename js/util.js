@@ -9,7 +9,7 @@ function addZero(num) {
 	if(num < 10) 
 		return '0' + num;
 	else
-		return num
+		return num;
 }
 // 错误处理（待完善）
 function error(info) {
@@ -19,7 +19,7 @@ function error(info) {
 function success(info) {
 	return alert(info);
 }
-//展示条目
+//加载所有条目和分类
 function showAllItem() {
 	/*1.清空旧元素
 	  2.插入新元素  
@@ -52,6 +52,8 @@ function insertItem(arr) {
 function disDetail(o) {
     $('#detail-section > div').hide();
     $('#item-detail-title h1').text(o.title);
+    $('#item-detail-info .time').text(o.cTime);
+    $('#item-detail-info .class').text(o.class);    
     $('#item-detail-abstract p').text(o.abstract);
     $('#item-detail').show(500);
 }
@@ -65,23 +67,26 @@ function insertClass(arr) {
             + value 
             + '('
             + Item.getNumByClass(value)
-            + ')</li>';
+            + ')<a class="pull-right class-delete-trigger color-gray">x</a></li>';
         oContainer.append(li);
     });
 }
 function insertSelectClass() {
     var option,
         oContainer = $('.select-class'),
-        aClass = localStorage.getItem('class').split(',');
-    oContainer.empty().append('<option value="">无分类</option>');
-    aClass.forEach(function(value, index, array) {
-        option = '<option value="'
-            + value
-            + '">'
-            + value 
-            + '</option>';
-        oContainer.append(option);
-    });
+        aClass;
+        oContainer.empty().append('<option value="">无分类</option>');
+        if(localStorage.getItem('class')) {
+            aClass = localStorage.getItem('class').split(',');
+            aClass.forEach(function(value, index, array) {
+                option = '<option value="'
+                    + value
+                    + '">'
+                    + value 
+                    + '</option>';
+                oContainer.append(option);
+            });
+        }
 }
 function init_event() {
 	/*初始化新增元素事件
@@ -239,6 +244,32 @@ function init_event() {
                 insertClass([className]);
             }
         });
-
+    });
+    // 删除分类
+    $('#menu-section').on('click', '.class-delete-trigger', function(e) {
+        e.stopPropagation();
+        if(!confirm('确定要删除？')) {
+            return 0;
+        }
+        var aClass = localStorage.getItem('class').split(','),
+            deleteClass = $(e.target).parent().data('class');
+        aClass.forEach(function(value, index, array) {
+            if(value == deleteClass){
+                array.splice(index, 1);
+                if(array.length != 0) {
+                    localStorage.setItem('class', array.join(','));
+                }
+                else {
+                    localStorage.removeItem('class');
+                }
+                Item.clearClass(deleteClass, function(err, result) {
+                    if(err) {
+                        return error(err);
+                    }
+                    showAllItem();
+                });
+                return success('删除成功');
+            }
+        });
     });
 }

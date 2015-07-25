@@ -39,11 +39,15 @@ section{
 	width: 70px;
 }
 #menu-section #item-class li {
+	padding: 4px 8px;
 	cursor: pointer;
 	transition:background-color 0.3s;
 }
 #menu-section #item-class li:hover {
-	background-color: white;
+	background-color: rgb(95, 97, 97);
+}
+#menu-section #item-class li .class-delete-trigger:hover {
+	font-weight: 600;
 }
 #item-section {
 	width: 30%;
@@ -116,6 +120,9 @@ section{
 }
 .display-none {
 	display: none;
+}
+.color-gray {
+	color: rgb(243, 239, 229);
 }
 /*通用end*/
 header{

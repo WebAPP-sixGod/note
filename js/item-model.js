@@ -85,9 +85,10 @@ Item.getNumByClass = function(Class) {
 	});
 	return sum;
 }
+// 根据class来查询笔记
 Item.getByClass = function(Class, callback){
 	if(!localStorage.getItem('index')) {
-		return callback('啥都没有');
+		return callback('先存条笔记吧');
 	}
 	var aItem = localStorage.getItem('index').split(',');
 	var result = [];
@@ -98,4 +99,22 @@ Item.getByClass = function(Class, callback){
 	});
 	return callback(null, result);
 }
-Item.getOne = function(){}
+// 清空笔记中的（class = Class）class属性
+Item.clearClass = function(Class, callback){
+	if(!localStorage.getItem('index')) {
+		return callback('先存条笔记吧');
+	}
+	var aItem = localStorage.getItem('index').split(',');
+	var result = [];
+	var o;
+	aItem.forEach(function(value, index, arr){
+		o = JSON.parse(localStorage.getItem(value));
+		if(o.class === Class) {
+			o.class = '';
+			localStorage.setItem(value, JSON.stringify(o));
+			result.push(value);
+		}
+	});
+	// 返回改动的数组
+	return callback(null, result);
+}
