@@ -31,14 +31,15 @@ function showAllItem() {
 	  2.插入新元素  
 	  3.更新分类数据
 	 */
+     console.log('show');
 	itemsDiv.empty();
 	if(localStorage.getItem('index')) {
 		var aItem = localStorage.getItem('index').split(',');
 		insertItem(aItem);
 	}
     // 更新分类数据
+    $('#item-class').empty();
     if(localStorage.getItem('class')) {
-        $('#item-class').empty();
         var aClass = localStorage.getItem('class').split(',');
         insertClass(aClass);
     }
@@ -61,8 +62,10 @@ function disDetail(o) {
     $('#detail-section > div').hide();
     $('#item-detail-title h1').text(o.title);
     $('#item-detail-info .time').text(o.cTime);
-    $('#item-detail-info .class').text(o.class);    
-    $('#item-detail-abstract p').text(o.abstract);
+    $('#item-detail-info .class').text(o.class);
+    //$('#item-detail-abstract div').text(o.abstract);
+    //因为marked解析的到的是html语句，所以可以直接append上去。
+    $('#item-detail-abstract #abstract-container').empty().append(o.markedAbstract);
     $('#item-detail').show(500);
 }
 function insertClass(arr) {
@@ -291,6 +294,7 @@ function init_event() {
                     if(err) {
                         return error(err);
                     }
+                    console.log('delete');
                     showAllItem();
                 });
                 return success('删除成功');
@@ -298,35 +302,6 @@ function init_event() {
         });
     });
 }
-
-
-function disDetail(o) {
-    $('#detail-section > div').hide();
-    $('#item-detail-title h1').text(o.title);
-    $('#item-detail-info .time').text(o.cTime);
-    $('#item-detail-info .class').text(o.class);
-    //$('#item-detail-abstract div').text(o.abstract);
-    //因为marked解析的到的是html语句，所以可以直接append上去。
-    $('#item-detail-abstract #abstract-container').empty().append(o.markedAbstract);
-    $('#item-detail').show(500);
-}
-
-
-function insertClass(arr) {
-    var li,
-        oContainer = $('#item-class');
-    arr.forEach(function(value, index, array) {
-        li = '<li data-class="'
-            + value
-            + '">'
-            + value 
-            + '('
-            + Item.getNumByClass(value)
-            + ')</li>';
-        oContainer.append(li);
-    });
-}
-
 
 //Markdown Parser Function
 function markedParser(string) {
