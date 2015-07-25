@@ -90,7 +90,8 @@ section{
 }
 #detail-section {
 	float: right;
-	width: 50%;
+	/* 宽度修改前是50%，有中间留白的问题 */
+	width: 55%;
 	height: 100%;
 	background-color: rgb(243, 239, 229);
 
@@ -139,9 +140,6 @@ nav .nav-list {
 }
 nav .nav-list a{
 	color: white;
-<<<<<<< HEAD
-=======
-
 }
 /*输入框样式*/
 .input-title{
@@ -167,5 +165,4 @@ nav .nav-list a{
   background-color: rgb(102, 193, 211);
   color: white;
   font-size: 1em;
->>>>>>> e4853cd9ee31c11e5bd24c4a8a14531f061c2ed3
 }
