@@ -49,6 +49,40 @@ function insertItem(arr) {
         itemEntry.append(tpl);
     });
 }
+function disDetail(o) {
+    $('#detail-section > div').hide();
+    $('#item-detail-title h1').text(o.title);
+    $('#item-detail-abstract p').text(o.abstract);
+    $('#item-detail').show(500);
+}
+function insertClass(arr) {
+    var li,
+        oContainer = $('#item-class');
+    arr.forEach(function(value, index, array) {
+        li = '<li data-class="'
+            + value
+            + '">'
+            + value 
+            + '('
+            + Item.getNumByClass(value)
+            + ')</li>';
+        oContainer.append(li);
+    });
+}
+function insertSelectClass() {
+    var option,
+        oContainer = $('.select-class'),
+        aClass = localStorage.getItem('class').split(',');
+    oContainer.empty().append('<option value="">无分类</option>');
+    aClass.forEach(function(value, index, array) {
+        option = '<option value="'
+            + value
+            + '">'
+            + value 
+            + '</option>';
+        oContainer.append(option);
+    });
+}
 function init_event() {
 	/*初始化新增元素事件
     */
@@ -58,7 +92,7 @@ function init_event() {
         var title = $('#form-add .input-title').val(),
             abstract = $('#form-add .input-abstract').val(),
             o = {
-                'class': '',
+                'class': $('#form-add select').val(),
                 'title': title,
                 'abstract': abstract,
                 'cTime': getTime()
@@ -76,36 +110,43 @@ function init_event() {
     });
 	// 编辑元素(使用子查询可以优化jquery选择器速度)
 	$(document).on('click', '.item .itemEdit', function(e) {
-        console.log(e.target);
         e.stopPropagation();
+
         var othis = $(e.target);
-		var clicked = $(this);
-		var currenDiv = clicked.prevAll();
-		var itemTitle = currenDiv[1].innerHTML;
-		var itemAbstract = currenDiv[0].innerHTML;
-		var currentItem = JSON.parse(localStorage.getItem(itemTitle));
+		var itemTitle = othis.siblings('.item-title').text();
+        var currentItem = JSON.parse(localStorage.getItem(itemTitle));
+        var itemClass = currentItem.class;
+		var itemAbstract = currentItem.abstract;
+
+        insertSelectClass();
 
         $('#detail-section > div').hide();
         $('#form-edit').show(200);
+
 		//将目前目录更新到编辑栏
 		$('#form-edit .input-title').attr('value', itemTitle);
+        $('#form-edit .select-class').val(itemClass);
 		$('#form-edit .input-abstract').val(itemAbstract);
+
 		//将编辑结果更新到localStorage
 		$('#update-add').one('click', function() {
-            // 连续修改时存在一个bug：Uncaught TypeError: Cannot set property 'title' of null
 			var clicked = $(this);
 			var changedItem = clicked.prevAll(); 
 			var changedItemTitle = changedItem.find('input').val();
+            var changeItemClass = changedItem.find('select').val();
 			var changedItemAbstract = changedItem.find('textarea').val();
 			var o = JSON.parse(localStorage.getItem(itemTitle));
+
+            // 创建更新后的item对象
 			o.title = changedItemTitle;
+            o.class = changeItemClass;
 			o.abstract = changedItemAbstract;
 			var item = new Item(o);
+
 			if (changedItemTitle != itemTitle) {
 				// 检查修改后的title是否会重复
                 if(!localStorage.getItem(changedItemTitle)) {
                     //删除元素使用Item.delete方法，该方法会删除index里面的索引和localStorage里面的item
-                    // 删除旧条目
                     Item.delete(itemTitle, function(err) {
                         if(err) {
                             return error(err);
@@ -160,12 +201,20 @@ function init_event() {
     $(document).on('click', '#item-class li', function(e) {
         var thisClass = $(e.target).data('class');
         Item.getByClass(thisClass, function(err, result) {
+            if(err) {
+                return error(err);
+            }
             itemsDiv.empty();
             return insertItem(result);
         })
     });
     // 新增条目菜单事件
     $('#form-add-trigger').on('click', function() {
+        $('#form-add input').val('');
+        $('#form-add textarea').val('');
+        // $('#form-add option[data-class=""]').prop('selected', selected);
+        insertSelectClass();
+
         $('#detail-section > div').hide();
         $('#form-add').show(200);
     });
@@ -191,25 +240,5 @@ function init_event() {
             }
         });
 
-    });
-}
-function disDetail(o) {
-    $('#detail-section > div').hide();
-    $('#item-detail-title h1').text(o.title);
-    $('#item-detail-abstract p').text(o.abstract);
-    $('#item-detail').show(500);
-}
-function insertClass(arr) {
-    var li,
-        oContainer = $('#item-class');
-    arr.forEach(function(value, index, array) {
-        li = '<li data-class="'
-            + value
-            + '">'
-            + value 
-            + '('
-            + Item.getNumByClass(value)
-            + ')</li>';
-        oContainer.append(li);
     });
 }

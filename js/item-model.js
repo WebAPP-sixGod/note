@@ -73,6 +73,9 @@ Item.delete = function(title, callback) {
 	})
 }
 Item.getNumByClass = function(Class) {
+	if(!localStorage.getItem('index')) {
+		return 0;
+	}
 	var aItem = localStorage.getItem('index').split(',');
 	var sum = 0;
 	aItem.forEach(function(value, index, arr){
@@ -83,6 +86,9 @@ Item.getNumByClass = function(Class) {
 	return sum;
 }
 Item.getByClass = function(Class, callback){
+	if(!localStorage.getItem('index')) {
+		return callback('啥都没有');
+	}
 	var aItem = localStorage.getItem('index').split(',');
 	var result = [];
 	aItem.forEach(function(value, index, arr){
@@ -93,4 +99,3 @@ Item.getByClass = function(Class, callback){
 	return callback(null, result);
 }
 Item.getOne = function(){}
-

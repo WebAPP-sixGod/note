@@ -6,4 +6,3 @@ function init(){
     $('#detail-section > div').hide();
     init_event();
 }
-
