@@ -1,4 +1,4 @@
-<!doctype html>
+ <!doctype html>
 <html lang="ch">
 <head>
     <meta charset="utf-8">
@@ -8,6 +8,34 @@
     <link rel="stylesheet" type="text/css" href="css/base.css">
 
     <style>
+    .button.sixgod{
+        background-color: rgb(102, 193, 211);
+        color: white;
+        border-radius: 20%;
+    }
+    .item button{
+        float: right;
+        color: white;
+        border-radius: 20%;
+        margin-right: 8px;
+    }
+    .item:after{
+        content: ".";
+        font-size: 0px;
+        clear: both;
+    }
+    .itemDelete{
+        background-color: red;
+    }
+    .itemEdit{
+        background-color: rgb(102, 193, 211);
+    }
+    button{
+         transition: background-color 0.5s, color 0.5s;
+    }
+    button:hover,.button:hover{
+        background-color:rgb(0, 110, 255);
+    }
     </style>
 </head>
 <body>
@@ -32,7 +60,7 @@
             </h1>
             <div id="form-add-class" class="display-none">
                 <input class="input-class" type="text" placeholder="分类名">
-                <button id="submit-class">添加</button>
+                <button id="submit-class" class="button sixgod">添加</button>
             </div>
             <a href="##" onclick="javescript:showAllItem()">所有 <span id="class-all-num"></span></a>
             <ul id="item-class">
