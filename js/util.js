@@ -28,10 +28,9 @@ function success(info) {
 //加载所有条目和分类
 function showAllItem() {
 	/*1.清空旧元素
-	  2.插入新元素  
+	  2.插入新元素
 	  3.更新分类数据
 	 */
-     console.log('show');
 	itemsDiv.empty();
 	if(localStorage.getItem('index')) {
 		var aItem = localStorage.getItem('index').split(',');
@@ -164,7 +163,8 @@ function init_event() {
 			o.title = changedItemTitle;
             o.class = changeItemClass;
             //Markdown解析，将markdown语句解析成html语句
-			o.abstract = markedParser(changedItemAbstract);
+            o.abstract = changedItemAbstract;
+            o.markedAbstract = markedParser(changedItemAbstract);
 			var item = new Item(o);
 
 			if (changedItemTitle != itemTitle) {
@@ -209,6 +209,7 @@ function init_event() {
 				return error(err);
 			}
 			showAllItem();
+            $('#detail-section>div').hide();
 			return success('删除成功');
 		})
 	});
@@ -295,8 +296,8 @@ function init_event() {
                     if(err) {
                         return error(err);
                     }
-                    console.log('delete');
                     showAllItem();
+                    
                 });
                 return success('删除成功');
             }
