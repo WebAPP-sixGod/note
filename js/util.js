@@ -53,7 +53,7 @@ function insertItem(arr) {
     arr.forEach(function(title, index) {
         o = JSON.parse(localStorage.getItem(title));
         // 条目模板
-        tpl = '<div class="item"><p class="item-title">'+ o.title +'</p>'+ '<p class="item-abstract">'+ o.markedAbstract +'</p><button class="itemEdit">编辑</button><button class="itemDelete">删除</button><span class="item-time">' + o.cTime + '</span></div>';
+        tpl = '<div class="item"><p class="item-title">'+ o.title +'</p>'+ '<p class="item-abstract">'+ o.abstract +'</p><button class="itemEdit">编辑</button><button class="itemDelete">删除</button><span class="item-time">' + o.cTime + '</span></div>';
         
         itemEntry.append(tpl);
     });
@@ -65,7 +65,8 @@ function disDetail(o) {
     $('#item-detail-info .class').text(o.class);
     //$('#item-detail-abstract div').text(o.abstract);
     //因为marked解析的到的是html语句，所以可以直接append上去。
-    $('#item-detail-abstract #abstract-container').empty().append(o.markedAbstract);
+    console.log(o);
+    $('#item-detail-abstract #abstract-container').empty().html(o.markedAbstract);
     $('#item-detail').show(500);
 }
 function insertClass(arr) {
@@ -133,10 +134,10 @@ function init_event() {
 	// 编辑元素(使用子查询可以优化jquery选择器速度)
 	$(document).on('click', '.item .itemEdit', function(e) {
         e.stopPropagation();
-
         var othis = $(e.target);
 		var itemTitle = othis.siblings('.item-title').text();
         var currentItem = JSON.parse(localStorage.getItem(itemTitle));
+        console.log(currentItem);
         var itemClass = currentItem.class;
 		var itemAbstract = currentItem.abstract;
 
