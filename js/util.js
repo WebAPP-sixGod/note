@@ -61,10 +61,9 @@ function disDetail(o) {
     $('#detail-section > div').hide();
     $('#item-detail-title h1').text(o.title);
     $('#item-detail-info .time').text(o.cTime);
-    $('#item-detail-info .class').text(o.class);
+    $('#item-detail-info .class').text(o.class||'无');
     //$('#item-detail-abstract div').text(o.abstract);
     //因为marked解析的到的是html语句，所以可以直接append上去。
-    console.log(o);
     $('#item-detail-abstract #abstract-container').empty().html(o.markedAbstract);
     $('#item-detail').show(500);
 }
@@ -98,6 +97,20 @@ function insertSelectClass() {
                 oContainer.append(option);
             });
         }
+}
+function checkSameClass(Class) {
+    if(!localStorage.getItem('class')) {
+        return 0;
+    }
+    var aClass = localStorage.getItem('class').split(','),
+        flag = 0;
+    aClass.forEach(function(value, index, arr) {
+        if(value == Class) {
+            // 存在重复，返回1
+            flag = 1;
+        }
+    });
+    return flag;
 }
 function init_event() {
 	/*初始化新增元素事件
@@ -136,7 +149,6 @@ function init_event() {
         var othis = $(e.target);
 		var itemTitle = othis.siblings('.item-title').text();
         var currentItem = JSON.parse(localStorage.getItem(itemTitle));
-        console.log(currentItem);
         var itemClass = currentItem.class;
 		var itemAbstract = currentItem.abstract;
 
@@ -229,6 +241,33 @@ function init_event() {
         disDetail(o);
     });
 
+    // 删除分类
+    $(document).on('click', '.class-delete-trigger', function(e) {
+        e.stopPropagation();
+        if(!confirm('确定要删除？')) {
+            return 0;
+        }
+        var aClass = localStorage.getItem('class').split(','),
+            deleteClass = $(e.target).parent().data('class');
+        aClass.forEach(function(value, index, array) {
+            if(value == deleteClass){
+                array.splice(index, 1);
+                if(array.length != 0) {
+                    localStorage.setItem('class', array.join(','));
+                }
+                else {
+                    localStorage.removeItem('class');
+                }
+                Item.clearClass(deleteClass, function(err, result) {
+                    if(err) {
+                        return error(err);  
+                    }
+                });
+                showAllItem();
+                return success('删除成功');
+            }
+        });
+    });
 
     // 按类别筛选
     $(document).on('click', '#item-class li', function(e) {
@@ -255,6 +294,7 @@ function init_event() {
 
     // 新增笔记本事件
     $('#add-class-trigger').on('click', function(){
+        var othis = $(this);
         var oContainer = $('#form-add-class');
         oContainer.removeClass('display-none');
         $('#submit-class').one('click', function() {
@@ -262,6 +302,10 @@ function init_event() {
             // 过滤纯空格类名
             if(!className.replace(/\s+/g,"")) {
                 return error('类名不能为空');
+            } else if(checkSameClass(className)) {
+                // 重新绑定一次事件
+                othis.trigger('click');
+                return error('换个名字吧，哥');
             } else {
                 
                 // 把现有的class储存到一个索引数组里
@@ -272,37 +316,11 @@ function init_event() {
                     localStorage.setItem('class', className);
                 }
                 insertClass([className]);
-            }
+                oContainer.addClass('display-none');
+            }   
         });
     });
-    // 删除分类
-    $('#menu-section').on('click', '.class-delete-trigger', function(e) {
-        e.stopPropagation();
-        if(!confirm('确定要删除？')) {
-            return 0;
-        }
-        var aClass = localStorage.getItem('class').split(','),
-            deleteClass = $(e.target).parent().data('class');
-        aClass.forEach(function(value, index, array) {
-            if(value == deleteClass){
-                array.splice(index, 1);
-                if(array.length != 0) {
-                    localStorage.setItem('class', array.join(','));
-                }
-                else {
-                    localStorage.removeItem('class');
-                }
-                Item.clearClass(deleteClass, function(err, result) {
-                    if(err) {
-                        return error(err);
-                    }
-                    showAllItem();
-                    
-                });
-                return success('删除成功');
-            }
-        });
-    });
+    
 }
 
 //Markdown Parser Function
@@ -318,7 +336,6 @@ function markedParser(string) {
         smartypants: false
     });
     var parsedContent = marked(string);
-    console.log(parsedContent);
 
     return parsedContent;
 }

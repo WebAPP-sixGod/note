@@ -59,7 +59,7 @@ section{
 	padding-bottom: 8px;
 	border-bottom: 1px solid #e0e0e0;
 }
-#form-add-trigger:hover {
+#form-add-trigger:hover,#add-class-trigger:hover {
 	font-size: 30px;
 }
 #item-section .item {

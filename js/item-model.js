@@ -105,7 +105,7 @@ Item.getByClass = function(Class, callback){
 // 清空笔记中的（class = Class）class属性
 Item.clearClass = function(Class, callback){
 	if(!localStorage.getItem('index')) {
-		return callback('先存条笔记吧');
+		return 0;
 	}
 	var aItem = localStorage.getItem('index').split(',');
 	var result = [];
