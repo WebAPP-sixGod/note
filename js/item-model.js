@@ -3,6 +3,8 @@
 	title:条目标题(当做主键)
 	abstract:正文
 	cTime:创建时间
+	img:画板图片编码
+	type:Item类型 0:markdown, 1:图片
 */
 function Item(obj) {
 	this.class = obj.class;
@@ -10,16 +12,21 @@ function Item(obj) {
 	this.abstract = obj.abstract;
 	this.markedAbstract = obj.markedAbstract;
 	this.cTime = obj.cTime;
+	this.type = obj.type;
+	this.img = obj.img;
 }
 
 /***************对象方法********************/
 Item.prototype.save = function(callback){
+
 	var o = {
 		'class': this.class,
 		'title': this.title,
 		'abstract': this.abstract,
 		'markedAbstract': this.markedAbstract,
-		'cTime': this.cTime
+		'cTime': this.cTime,
+		'type' = this.type,
+		'img' = this.img
 	}
     // title不能为空
     if(!o.title) {
@@ -47,7 +54,9 @@ Item.prototype.update = function(callback){
 		'title': this.title,
 		'abstract': this.abstract,
 		'markedAbstract': this.markedAbstract,
-		'cTime': this.cTime
+		'cTime': this.cTime,
+		'type' = this.type,
+		'img' = this.img
 	}
 	// 创建条目
 	localStorage.setItem(o.title, JSON.stringify(o));
