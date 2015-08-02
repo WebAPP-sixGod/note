@@ -78,18 +78,51 @@
         </section>
         <section id="detail-section">
             <div id="form-add">
-                <h1>新增笔记</h1>
-                <div class="form-control">
-                    <input type="text" class="input-title" placeholder="请输入标题" />
+                
+                <div class="tab-container">
+                    <h1>
+                        新增笔记
+                    </h1>
+                    <div class="form-control">
+                        <input type="text" class="input-title" placeholder="请输入标题" />
+                    </div>
+                    <div class="form-control">
+                        <select class="select-class">
+                        </select>
+                        <button class="tab-control active" data-index="0" data-item-type="0">
+                            md编辑器
+                        </button>
+                        <button class="tab-control" data-index="1" data-item-type="1">
+                            画板
+                        </button>
+                    </div>
+                    <div class="form-control tab show">
+                        <textarea class="input-abstract" placeholder="请在此添加正文"></textarea>
+                    </div>
+                    <div class="tab">
+                        <div class="form-control">
+                            粗细：<input type="range" id="lineWidth" min="1" max="10" value="1">
+                        </div>
+
+                        <div>
+                            <span>画笔颜色：</span>
+                            <ul id="colorBoard" class="clearfix">
+                                
+                            </ul>
+                        </div>
+
+                        <button id="save">保存</button>
+                        <button id="erase">橡皮</button>
+                        <button id="pen">画笔</button>
+                        <button id="init">reset</button>
+
+                        <img id="preview" src="">
+
+                        <canvas id="paint-board" width="700" height="500"></canvas>
+                    </div>
+                    <button id="submit-add">添加</button>
                 </div>
-                <div class="form-control">
-                    <select class="select-class">
-                    </select>
-                </div>
-                <div class="form-control">
-                    <textarea class="input-abstract" placeholder="请在此添加正文"></textarea>
-                </div>
-                <button id="submit-add">添加</button>
+                
             </div>
             <div id="form-edit">
                 <h1>更新笔记</h1>
@@ -106,7 +139,7 @@
                 <button id="update-add">更新</button>
             </div>
             <div id="item-detail">
-                <div id="item-detail-title">
+                <div id=    "item-detail-title">
                     <h1></h1>
                 </div>
                 <div id="item-detail-info">
@@ -124,8 +157,9 @@
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/marked/marked.min.js"></script>
     <!-- 自定义脚本 -->
-    <!-- item-model item数据模型 -->
     <script src="js/util.js"></script>
+    <!-- item-model item数据模型 -->
     <script src="js/item-model.js"></script>
+    <script src="js/paintBoard.js"></script>
     <script src="js/base.js"></script>
 </body>

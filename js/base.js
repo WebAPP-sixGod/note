@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	init();
+    $('.tab-container').tab();
 })
 function init(){
 	showAllItem();

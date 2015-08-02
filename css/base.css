@@ -27,12 +27,11 @@ section{
 }
 .container section {
 	padding: 14px;
-	height: 100%;
+	min-height: 100%;
 	float: left;
 }
 #menu-section {
 	width: 15%;
-	height: 100%;
 	background-color: rgb(22, 216, 201);
 }
 #menu-section input.input-class{
@@ -51,7 +50,6 @@ section{
 }
 #item-section {
 	width: 30%;
-	height: 100%;
 	padding: 14px;
 	background-color: rgb(243, 239, 229);
 }
@@ -96,7 +94,6 @@ section{
 	float: right;
 	/* 宽度修改前是50%，有中间留白的问题 */
 	width: 55%;
-	height: 100%;
 	background-color: rgb(243, 239, 229);
 
 }
@@ -127,6 +124,9 @@ section{
 }
 .font-white {
 	color: white;
+}
+button.active {
+	box-shadow: inset 1px 1px 4px
 }
 /*通用end*/
 header{
@@ -177,4 +177,22 @@ nav .nav-list a{
 }
 .form-control{
 	margin-bottom: 10px;
+}
+
+/*paintBoard*/
+canvas {
+	background-color: white;
+    border: 1px solid gray;
+}
+#paint-board {
+	margin-top: 1rem;
+}
+#colorBoard {
+	padding: 0px 28px;
+}
+#colorBoard li{
+    float: left;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
 }

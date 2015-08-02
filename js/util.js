@@ -339,3 +339,29 @@ function markedParser(string) {
 
     return parsedContent;
 }
+
+/*************tab组件******************/
+$.fn.extend({
+    tab: function() {
+        var othis = $(this);
+        var eEontrol = $('.tab-control');
+        //初始化
+        console.log(othis);
+        othis.children('.tab')
+                .hide()
+                .eq(0)
+                .show();
+
+        eEontrol.on('click', function(e){
+            var index = $(e.target).data('index');
+
+            eEontrol.removeClass('active');
+            $(this).addClass('active');
+
+            othis.children('.tab')
+                .hide()
+                .eq(index)
+                .show();
+        })
+    }
+})
