@@ -25,8 +25,8 @@ Item.prototype.save = function(callback){
 		'abstract': this.abstract,
 		'markedAbstract': this.markedAbstract,
 		'cTime': this.cTime,
-		'type' = this.type,
-		'img' = this.img
+		'type' : this.type,
+		'img' : this.img
 	}
     // title不能为空
     if(!o.title) {
@@ -55,8 +55,8 @@ Item.prototype.update = function(callback){
 		'abstract': this.abstract,
 		'markedAbstract': this.markedAbstract,
 		'cTime': this.cTime,
-		'type' = this.type,
-		'img' = this.img
+		'type' : this.type,
+		'img' : this.img
 	}
 	// 创建条目
 	localStorage.setItem(o.title, JSON.stringify(o));

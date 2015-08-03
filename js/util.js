@@ -124,10 +124,17 @@ function init_event() {
             o = {
                 'class': $('#form-add select').val(),
                 'title': title,
-                'abstract': abstract,
-                'markedAbstract': parseResult,
-                'cTime': getTime()
+                'cTime': getTime(),
+                'type': $('#form-add .tab-control.active').data('item-type'),
             }
+        if(o.type == 1) {
+            //存储图片编码
+            o.img = $('#form-add canvas')[0].toDataURL();
+            console.log(o.img);
+        } else {
+            o.abstract = abstract;
+            o.markedAbstract = parseResult;
+        }
         var item = new Item(o);
         item.save(function(err){
             if(err) {
