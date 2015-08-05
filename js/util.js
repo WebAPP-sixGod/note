@@ -52,7 +52,7 @@ function insertItem(arr) {
     arr.forEach(function(title, index) {
         o = JSON.parse(localStorage.getItem(title));
         // 条目模板
-        tpl = '<div class="item"><p class="item-title">'+ o.title +'</p>'+ '<p class="item-abstract">'+ o.abstract +'</p><button class="itemEdit">编辑</button><button class="itemDelete">删除</button><span class="item-time">' + o.cTime + '</span></div>';
+        tpl = '<div class="item"><p class="item-title">'+ o.title +'</p>'+ '<p class="item-abstract">'+ (o.abstract || '[图片]') +'</p><button class="itemEdit">编辑</button><button class="itemDelete">删除</button><span class="item-time">' + o.cTime + '</span></div>';
         
         itemEntry.append(tpl);
     });
