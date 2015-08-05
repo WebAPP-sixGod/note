@@ -42,13 +42,6 @@
     <header class="clearfix">
         <div class="floatleft title "><a href="" class="font-white">六神笔记本</a></div>
     </header>
-   <!--  <nav class="clearfix">
-       <ul class="floatleft">
-           <li class="nav-list"><a href="javascript:void">新建笔记本</a></li>
-           <li class="nav-list"><a href="javascript:void">删除</a></li>
-           <li class="nav-list"><a href="javascript:void">分享</a></li>
-       </ul>
-   </nav> -->
     <div class="clearfix container">
         <section id="menu-section">
             <h1 class="clearfix">
@@ -133,8 +126,29 @@
                     <select class="select-class">
                     </select>
                 </div>
-                <div class="form-control">
+                <div class="form-control" id="edit-md">
                     <textarea class="input-abstract" placeholder="请在此添加正文"></textarea>
+                </div>
+                <div id="edit-paint">
+                    <div class="form-control">
+                        粗细：<input type="range" id="lineWidth" min="1" max="10" value="1">
+                    </div>
+
+                    <div>
+                        <span>画笔颜色：</span>
+                        <ul id="colorBoard" class="clearfix">
+                            
+                        </ul>
+                    </div>
+
+                    <button id="save">保存</button>
+                    <button id="erase">橡皮</button>
+                    <button id="pen">画笔</button>
+                    <button id="init">reset</button>
+
+                    <img id="preview" src="">
+
+                    <canvas id="paint-board" width="700" height="500"></canvas>
                 </div>
                 <button id="update-add">更新</button>
             </div>
@@ -147,7 +161,8 @@
                     <span>| 分类：<span class="class"></span></span>
                 </div>
                 <div id="item-detail-abstract">
-                <div id="abstract-container"></div>
+                    <div id="abstract-container"></div>
+                    <canvas id="paint-detail" width="700" height="500"></canvas>
                 </div>
             </div>
         </section>

@@ -62,9 +62,15 @@ function disDetail(o) {
     $('#item-detail-title h1').text(o.title);
     $('#item-detail-info .time').text(o.cTime);
     $('#item-detail-info .class').text(o.class||'无');
-    //$('#item-detail-abstract div').text(o.abstract);
-    //因为marked解析的到的是html语句，所以可以直接append上去。
-    $('#item-detail-abstract #abstract-container').empty().html(o.markedAbstract);
+    if(o.type == 0) {     
+        $('#item-detail-abstract #paint-detail').hide();
+        $('#item-detail-abstract #abstract-container').empty().html(o.markedAbstract);
+    } else {
+        $('#item-detail-abstract #paint-detail').show();        
+        var img = document.createElement('img');
+        img.src = o.img;
+        $('#item-detail-abstract #paint-detail')[0].getContext('2d').drawImage(img, 0, 0);
+    }
     $('#item-detail').show(500);
 }
 function insertClass(arr) {
@@ -130,7 +136,6 @@ function init_event() {
         if(o.type == 1) {
             //存储图片编码
             o.img = $('#form-add canvas')[0].toDataURL();
-            console.log(o.img);
         } else {
             o.abstract = abstract;
             o.markedAbstract = parseResult;
@@ -167,7 +172,15 @@ function init_event() {
 		//将目前目录更新到编辑栏
 		$('#form-edit .input-title').attr('value', itemTitle);
         $('#form-edit .select-class').val(itemClass);
-		$('#form-edit .input-abstract').val(itemAbstract);
+        if(currentItem.type == 1) {
+            $('#form-edit #edit-md').hide();
+            var img = document.createElement('img')
+            img.src = currentItem.img;
+            $('#form-edit canvas')[0].getContext('2d').drawImage(img, 0, 0);
+        } else {
+            $('#form-edit #edit-paint').hide();
+            $('#form-edit .input-abstract').val(itemAbstract);
+        }
 
 		//将编辑结果更新到localStorage
 		$('#update-add').one('click', function() {
