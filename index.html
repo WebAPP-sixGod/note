@@ -7,36 +7,6 @@
     <!-- 自定义样式 -->
     <link rel="stylesheet" type="text/css" href="css/base.css">
 
-    <style>
-    .button.sixgod{
-        background-color: rgb(102, 193, 211);
-        color: white;
-        border-radius: 20%;
-    }
-    .item button{
-        float: right;
-        color: white;
-        border-radius: 20%;
-        margin-right: 8px;
-    }
-    .item:after{
-        content: ".";
-        font-size: 0px;
-        clear: both;
-    }
-    .itemDelete{
-        background-color: red;
-    }
-    .itemEdit{
-        background-color: rgb(102, 193, 211);
-    }
-    button{
-         transition: background-color 0.5s, color 0.5s;
-    }
-    button:hover,.button:hover{
-        background-color:rgb(0, 110, 255);
-    }
-    </style>
 </head>
 <body>
     <header class="clearfix">
@@ -92,26 +62,23 @@
                     <div class="form-control tab show">
                         <textarea class="input-abstract" placeholder="请在此添加正文"></textarea>
                     </div>
-                    <div class="tab">
+                    <div class="tab paint-container">
                         <div class="form-control">
-                            粗细：<input type="range" id="lineWidth" min="1" max="10" value="1">
+                            粗细：<input type="range" class="lineWidth"  min="1" max="10" value="1" >
                         </div>
 
                         <div>
                             <span>画笔颜色：</span>
-                            <ul id="colorBoard" class="clearfix">
+                            <ul class="colorBoard clearfix">
                                 
                             </ul>
                         </div>
 
-                        <button id="save">保存</button>
-                        <button id="erase">橡皮</button>
-                        <button id="pen">画笔</button>
-                        <button id="init">reset</button>
+                        <button class="erase">橡皮</button>
+                        <button class="pen">画笔</button>
+                        <button class="init">reset</button>
 
-                        <img id="preview" src="">
-
-                        <canvas id="paint-board" width="700" height="500"></canvas>
+                        <canvas width="700" height="500"></canvas>
                     </div>
                     <button id="submit-add">添加</button>
                 </div>
@@ -129,26 +96,23 @@
                 <div class="form-control" id="edit-md">
                     <textarea class="input-abstract" placeholder="请在此添加正文"></textarea>
                 </div>
-                <div id="edit-paint">
+                <div id="edit-paint" class="paint-container">
                     <div class="form-control">
-                        粗细：<input type="range" id="lineWidth" min="1" max="10" value="1">
+                        粗细：<input type="range" class="lineWidth" min="1" max="10" value="1">
                     </div>
 
                     <div>
                         <span>画笔颜色：</span>
-                        <ul id="colorBoard" class="clearfix">
+                        <ul class="colorBoard clearfix">
                             
                         </ul>
                     </div>
 
-                    <button id="save">保存</button>
-                    <button id="erase">橡皮</button>
-                    <button id="pen">画笔</button>
-                    <button id="init">reset</button>
+                    <button class="erase">橡皮</button>
+                    <button class="pen">画笔</button>
+                    <button class="init">reset</button>
 
-                    <img id="preview" src="">
-
-                    <canvas id="paint-board" width="700" height="500"></canvas>
+                    <canvas width="700" height="500"></canvas>
                 </div>
                 <button id="update-add">更新</button>
             </div>

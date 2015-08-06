@@ -1,6 +1,9 @@
 $(document).ready(function(){
 	init();
     $('.tab-container').tab();
+    $('.paint-container').each(function() {
+        $(this).paintBoard();
+    })
 })
 function init(){
 	showAllItem();

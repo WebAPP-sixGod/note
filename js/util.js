@@ -366,7 +366,6 @@ $.fn.extend({
         var othis = $(this);
         var eEontrol = $('.tab-control');
         //初始化
-        console.log(othis);
         othis.children('.tab')
                 .hide()
                 .eq(0)
