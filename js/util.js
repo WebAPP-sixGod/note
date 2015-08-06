@@ -157,7 +157,8 @@ function init_event() {
 
 	// 编辑元素(使用子查询可以优化jquery选择器速度)
 	$(document).on('click', '.item .itemEdit', function(e) {
-        e.stopPropagation();
+        var editTrigger = e;
+        editTrigger.stopPropagation();
         var othis = $(e.target);
 		var itemTitle = othis.siblings('.item-title').text();
         var currentItem = JSON.parse(localStorage.getItem(itemTitle));
@@ -169,15 +170,18 @@ function init_event() {
         $('#detail-section > div').hide();
         $('#form-edit').show(200);
 
-		//将目前目录更新到编辑栏
+		//将目前资料更新到编辑栏
 		$('#form-edit .input-title').attr('value', itemTitle);
         $('#form-edit .select-class').val(itemClass);
         if(currentItem.type == 1) {
+            $('#form-edit #edit-paint').show();
             $('#form-edit #edit-md').hide();
             var img = document.createElement('img')
             img.src = currentItem.img;
+            $('#form-edit .init').trigger('click');
             $('#form-edit canvas')[0].getContext('2d').drawImage(img, 0, 0);
         } else {
+            $('#form-edit #edit-md').show();
             $('#form-edit #edit-paint').hide();
             $('#form-edit .input-abstract').val(itemAbstract);
         }
@@ -185,20 +189,28 @@ function init_event() {
 		//将编辑结果更新到localStorage
 		$('#update-add').one('click', function() {
 			var clicked = $(this);
-			var changedItem = clicked.prevAll(); 
-			var changedItemTitle = changedItem.find('input').val();
-            var changeItemClass = changedItem.find('select').val();
-			var changedItemAbstract = changedItem.find('textarea').val();         
+			var form = $('#form-edit');
+			var changedItemTitle = form.find('.input-title').val();
+            var changeItemClass = form.find('.select-class').val();
+			var changedItemAbstract = form.find('.input-abstract').val();         
 			var o = JSON.parse(localStorage.getItem(itemTitle));
 
             // 创建更新后的item对象
 			o.title = changedItemTitle;
-            o.class = changeItemClass;
-            //Markdown解析，将markdown语句解析成html语句
-            o.abstract = changedItemAbstract;
-            o.markedAbstract = markedParser(changedItemAbstract);
-			var item = new Item(o);
+            o.class = changeItemClass; 
 
+            if(o.type == 1) {
+                //存储图片编码
+                o.img = $('#form-edit canvas')[0].toDataURL();
+            } else {
+                //Markdown解析，将markdown语句解析成html语句
+                o.abstract = changedItemAbstract;
+                o.markedAbstract = markedParser(changedItemAbstract);
+            }
+			var item = new Item(o);
+            // bug： 名称获取有时不准确
+            console.log(changedItemTitle);
+            console.log(itemTitle);
 			if (changedItemTitle != itemTitle) {
 				// 检查修改后的title是否会重复
                 if(!localStorage.getItem(changedItemTitle)) {
@@ -216,7 +228,8 @@ function init_event() {
                     });
                 }
                 else {
-                    $(e.target).trigger('click');
+
+                    $(editTrigger.target).trigger('click');
                     return error('这个标题重复了，换个呗~');
                 }
 			} else {
