@@ -210,6 +210,7 @@ button:hover,.button:hover{
 
 /*paintBoard*/
 canvas {
+	margin-top: 12px;
 	background-color: white;
     border: 1px solid gray;
 }

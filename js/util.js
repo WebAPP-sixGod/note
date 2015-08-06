@@ -250,6 +250,7 @@ function init_event() {
     // 查看详情
     $(document).on('click', '.item', function(e){
         var title;
+        var canvas = $('#item-detail canvas')[0];
         if($(e.target).prop('class') == 'item') {
             title = $(e.target).children('.item-title').text();
         } else {
@@ -258,6 +259,7 @@ function init_event() {
         var o = JSON.parse(localStorage.getItem(title));
         //清除内容，不然disDetail会一直往上面append内容
         $('#abstract-container').empty();
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
         disDetail(o);
     });
 
@@ -304,8 +306,10 @@ function init_event() {
 
     // 新增条目菜单事件
     $('#form-add-trigger').on('click', function() {
+        // 清空记录的值
         $('#form-add input').val('');
         $('#form-add textarea').val('');
+        $('#form-add .init').trigger('click');
         insertSelectClass();
         $('#detail-section > div').hide();
         $('#form-add').show(200);
