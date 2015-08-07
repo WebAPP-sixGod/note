@@ -66,6 +66,7 @@ function disDetail(o) {
         $('#item-detail-abstract #paint-detail').hide();
         $('#item-detail-abstract #abstract-container').empty().html(o.markedAbstract);
     } else {
+        $('#item-detail-abstract #abstract-container').empty()
         $('#item-detail-abstract #paint-detail').show();        
         var img = document.createElement('img');
         img.src = o.img;
@@ -159,7 +160,7 @@ function init_event() {
 	$(document).on('click', '.item .itemEdit', function(e) {
         var editTrigger = e;
         editTrigger.stopPropagation();
-        var othis = $(e.target);
+        var othis = $(editTrigger.target);
 		var itemTitle = othis.siblings('.item-title').text();
         var currentItem = JSON.parse(localStorage.getItem(itemTitle));
         var itemClass = currentItem.class;
@@ -171,7 +172,8 @@ function init_event() {
         $('#form-edit').show(200);
 
 		//将目前资料更新到编辑栏
-		$('#form-edit .input-title').attr('value', itemTitle);
+		$('#form-edit .input-title').prop('value', itemTitle);
+        $('#form-edit .origin-title').prop('value', itemTitle);
         $('#form-edit .select-class').val(itemClass);
         if(currentItem.type == 1) {
             $('#form-edit #edit-paint').show();
@@ -185,63 +187,60 @@ function init_event() {
             $('#form-edit #edit-paint').hide();
             $('#form-edit .input-abstract').val(itemAbstract);
         }
+	});
 
-		//将编辑结果更新到localStorage
-		$('#update-add').one('click', function() {
-			var clicked = $(this);
-			var form = $('#form-edit');
-			var changedItemTitle = form.find('.input-title').val();
-            var changeItemClass = form.find('.select-class').val();
-			var changedItemAbstract = form.find('.input-abstract').val();         
-			var o = JSON.parse(localStorage.getItem(itemTitle));
+    //将编辑结果更新到localStorage
+    $(document).on('click', '#update-add', function() {
+        var clicked = $(this);
+        var form = $('#form-edit');
+        var changedItemTitle = form.find('.input-title').val();
+        var changeItemClass = form.find('.select-class').val();
+        var changedItemAbstract = form.find('.input-abstract').val();
+        var originTitle = form.find('.origin-title').val();
+        var o = JSON.parse(localStorage.getItem(originTitle));
 
-            // 创建更新后的item对象
-			o.title = changedItemTitle;
-            o.class = changeItemClass; 
+        // 创建更新后的item对象
+        o.title = changedItemTitle;
+        o.class = changeItemClass; 
 
-            if(o.type == 1) {
-                //存储图片编码
-                o.img = $('#form-edit canvas')[0].toDataURL();
-            } else {
-                //Markdown解析，将markdown语句解析成html语句
-                o.abstract = changedItemAbstract;
-                o.markedAbstract = markedParser(changedItemAbstract);
-            }
-			var item = new Item(o);
-            // bug： 名称获取有时不准确
-            console.log(changedItemTitle);
-            console.log(itemTitle);
-			if (changedItemTitle != itemTitle) {
-				// 检查修改后的title是否会重复
-                if(!localStorage.getItem(changedItemTitle)) {
-                    //删除元素使用Item.delete方法，该方法会删除index里面的索引和localStorage里面的item
-                    Item.delete(itemTitle, function(err) {
+        if(o.type == 1) {
+            //存储图片编码
+            o.img = $('#form-edit canvas')[0].toDataURL();
+        } else {
+            //Markdown解析，将markdown语句解析成html语句
+            o.abstract = changedItemAbstract;
+            o.markedAbstract = markedParser(changedItemAbstract);
+        }
+        var item = new Item(o);
+        console.log(changedItemTitle);
+        console.log(originTitle);
+        if (changedItemTitle != originTitle) {
+            // 检查修改后的title是否会重复
+            if(!localStorage.getItem(changedItemTitle)) {
+                //删除元素使用Item.delete方法，该方法会删除index里面的索引和localStorage里面的item
+                Item.delete(originTitle, function(err) {
+                    if(err) {
+                        return error(err);
+                    }
+                    // 创建新条目
+                    item.save(function(err){
                         if(err) {
                             return error(err);
                         }
-                        // 创建新条目
-                        item.save(function(err){
-                            if(err) {
-                                return error(err);
-                            }
-                        });
                     });
-                }
-                else {
-
-                    $(editTrigger.target).trigger('click');
-                    return error('这个标题重复了，换个呗~');
-                }
-			} else {
-				item.update(function(){});
-			}
-            showAllItem();
-            disDetail(o);
-            //dom被刷新了，所以事件无法触发
-            return success('修改成功');
-		});
-	});
-
+                });
+            }
+            else {
+                return error('这个标题重复了，换个呗~');
+            }
+        } else {
+            item.update(function(){});
+        }
+        showAllItem();
+        disDetail(o);
+        //dom被刷新了，所以事件无法触发
+        return success('修改成功');
+    });
 
 	// 删除元素
 	$(document).on('click', '.item .itemDelete', function(e){
